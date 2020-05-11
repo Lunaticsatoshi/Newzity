@@ -6,7 +6,7 @@ import 'package:newzity/utilities/apikey.dart';
 import 'package:http/http.dart' as http;
 
 class TopNewsRepository extends BaseTopNewsRepository {
-  static const int perPage = 10;
+  static const int perPage = 30;
   final http.Client _httpClient;
 
 
@@ -16,7 +16,7 @@ class TopNewsRepository extends BaseTopNewsRepository {
   Future<List<Article>> getTopNews({int page}) async {
     List<Article> topnews = [];
     String requestUrl =
-        "https://newsapi.org/v2/top-headlines?country=in&sortBy=popularity&language=en&apiKey=${apiKey}";
+        "https://newsapi.org/v2/top-headlines?country=in&sortBy=popularity&pageSize=$perPage&language=en&page=$page&apiKey=${apiKey}";
 
       try {
       final response = await _httpClient.get(requestUrl);

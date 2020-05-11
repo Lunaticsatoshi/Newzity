@@ -27,14 +27,11 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
      if (event is AppStarted){
        yield* _mapAppStartedToState();
      }else if (event is RefreshNews){
-       yield* _getNews(news: []);
-       yield* _getTopNews(topnews: []);
+       yield* _getNews(topnews: [], news: []);
      }else if (event is LoadMoreNews){
        yield* _mapLoadMoreNewsToState(event);
      }else if (event is LoadMoreTopNews){
       yield* _mapLoadMoreTopNewsToState(event);
-     }else if (event is NavigatedToCategoryPage){
-       yield* _mapNavigatedToCategoryPageToState(event.category);
      }else if (event is RefreshCategoryNews){
        yield* _getCategoryNews(categorynews: [], category: event.category);
      }else if (event is LoadMoreCategoryNews){
@@ -44,33 +41,40 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
      
      Stream<NewsState> _mapAppStartedToState() async* {
        yield NewsLoading();
-       yield* _getNews(news: []);
-       yield* _getTopNews(topnews: []);
+       yield* _getNews(topnews: [],news: []);
      }
 
-     Stream<NewsState> _mapNavigatedToCategoryPageToState(String category) async*{
-       yield CategoryNewsLoading();
-       yield* _getCategoryNews(categorynews: [], category:category);
-     }
-
-   Stream<NewsState> _getNews({List<Article> news, int page = 0}) async* {
+   Stream<NewsState> _getNews({List<Article> topnews,List<Article> news, int page = 0, int page1 = 1 }) async* {
       //Request for News
       try {
-        List<Article> newNewsList = news + await _newsRepository.getNews(page: page);
-        yield NewsLoaded(news: newNewsList);
+        List<Article> newTopNewsList = topnews + await _topNewsRepository.getTopNews(page: page);
+        List<Article> newNewsList = news + await _newsRepository.getNews(page: page1);
+        yield NewsLoaded(topnews: newTopNewsList, news: newNewsList);
       }catch (err){
         yield NewsError();
       }
    }
 
-   Stream<NewsState> _getTopNews({List<Article> topnews, int page = 0}) async* {
-     //Request For Top News
-     try{
+   Stream<NewsState> _loadMoreNews({List<Article> topnews, List<Article> news, int page = 1}) async*{
+     //Request For More News
+     try {
+        List<Article> newTopNewsList = topnews;
+        List<Article> newNewsList = news + await _newsRepository.getNews(page: page);
+        yield NewsLoaded(topnews: newTopNewsList,news: newNewsList);
+      }catch (err){
+        yield NewsError();
+      }
+   }
+
+    Stream<NewsState> _loadMoreTopNews({List<Article> topnews, List<Article> news, int page = 0,}) async* {
+     //Request for More Top News
+     try {
         List<Article> newTopNewsList = topnews + await _topNewsRepository.getTopNews(page: page);
-        yield NewsLoaded(topnews: newTopNewsList);
-     }catch (err) {
-       yield NewsError();
-     }
+        List<Article> newNewsList = news;
+        yield NewsLoaded(topnews: newTopNewsList,news: newNewsList);
+      }catch (err){
+        yield NewsError();
+      }
    }
 
    Stream _getCategoryNews({List<Article> categorynews, int page = 0, @required String category}) async*{
@@ -84,13 +88,13 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
    }
 
    Stream<NewsState> _mapLoadMoreNewsToState(LoadMoreNews event) async*{
-    final int nextPage = event.news.length ~/ NewsRepository.perPage;
-    yield* _getNews(news: event.news, page: nextPage);
+    final int nextPage = 2*event.news.length ~/ NewsRepository.perPage;
+    yield* _loadMoreNews(topnews: event.topnews, news: event.news, page: nextPage);
    }
 
    Stream<NewsState> _mapLoadMoreTopNewsToState(LoadMoreTopNews event) async*{
     final int nextTopPage = event.topnews.length ~/ TopNewsRepository.perPage;
-    yield* _getTopNews(topnews: event.topnews, page: nextTopPage);
+    yield* _loadMoreTopNews(topnews: event.topnews, news: event.news, page: nextTopPage);
    }
    
    Stream<NewsState> _mapLoadMoreCategoryNewsToState(LoadMoreCategoryNews event) async* {

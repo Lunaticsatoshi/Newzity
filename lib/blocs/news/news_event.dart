@@ -9,12 +9,6 @@ abstract class NewsEvent extends Equatable{
  //App Started
 class AppStarted extends NewsEvent {}
 
-//Navigated To Category News Page
-class NavigatedToCategoryPage extends NewsEvent {
-  final String category;
-
-  NavigatedToCategoryPage({this.category});
-}
 
 //Refresh News
 class RefreshNews extends NewsEvent {}
@@ -29,27 +23,29 @@ class RefreshCategoryNews extends NewsEvent {
 //Load More News
 class LoadMoreNews extends NewsEvent {
   final List<Article> news;
+  final List<Article> topnews;
 
-  const LoadMoreNews({this.news});
-
-  @override
-  List<Object> get props => [news];
+  const LoadMoreNews({this.topnews, this.news});
 
   @override
-  String toString() => 'LoadMoreNews { news: $news}';
+  List<Object> get props => [topnews, news];
+
+  @override
+  String toString() => 'LoadMoreNews { topnews: $topnews news: $news}';
 }
 
 //Load More Top News
 class LoadMoreTopNews extends NewsEvent {
     final List<Article> topnews;
+    final List<Article> news;
 
-  const LoadMoreTopNews({this.topnews});
-
-  @override
-  List<Object> get props => [topnews];
+  const LoadMoreTopNews({this.topnews, this.news});
 
   @override
-  String toString() => 'LoadMoreTopNews { topnews: $topnews}';
+  List<Object> get props => [topnews, news];
+
+  @override
+  String toString() => 'LoadMoreTopNews { topnews: $topnews news: $news }';
 }
 
 //Load More Category News

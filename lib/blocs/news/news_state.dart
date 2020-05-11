@@ -9,20 +9,15 @@ const NewsState();
  //Intial State
 class NewsEmpty extends NewsState {}
 
- //Intial State
-class CategoryNewsEmpty extends NewsState {}
 
 //Loading State
 class NewsLoading extends NewsState {}
 
-//Loading State
-class CategoryNewsLoading extends NewsState {}
 
 //Retrieved News
 class NewsLoaded extends NewsState{
   final List<Article> news;
   final List<Article> topnews;
-
 
   const NewsLoaded({this.news, this.topnews});
 
@@ -30,8 +25,10 @@ class NewsLoaded extends NewsState{
   List<Object> get props => [news, topnews];
 
   @override
-  String toString() => 'NewsLoaded { news: $news topnews: $topnews  }';
+  String toString() => 'NewsLoaded { news: $news topnews: $topnews }';
 }
+
+
 
 //Retrieved Category News
 class CategoryNewsLoaded extends NewsState{

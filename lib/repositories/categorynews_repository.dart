@@ -7,8 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 
 class CategoryNewsRepository extends BaseCategoryNewsRepository {
-  static const String _baseUrl = "https://newsapi.org";
-  static const int perPage = 10;
+  static const int perPage = 60;
     final http.Client _httpClient;
 
 
@@ -18,7 +17,7 @@ class CategoryNewsRepository extends BaseCategoryNewsRepository {
   Future<List<Article>> getCategoryNews({int page, @required String category}) async {
     List<Article> categorynews = [];
     String requestUrl =
-        "$_baseUrl/v2/top-headlines?country=in&pageSize=$perPage&category=$category&sortBy=popularity&page=$page&apiKey=${apiKey}";
+        "https://newsapi.org/v2/top-headlines?country=in&pageSize=$perPage&category=$category&sortBy=popularity&page=$page&apiKey=${apiKey}";
 
    try {
       final response = await _httpClient.get(requestUrl);
@@ -29,10 +28,10 @@ class CategoryNewsRepository extends BaseCategoryNewsRepository {
           categorynews.add(Article.fromJson(element));
         }
       });
-      }
+    }
       return categorynews;
     } catch (err) {
-      
+      throw err;
   }
 
 }
