@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:newzity/UI/category_screen.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class CategoryCard extends StatelessWidget {
   final String imageAssetUrl, categoryName;
@@ -31,7 +32,13 @@ class CategoryCard extends StatelessWidget {
             ]),
             child: CircleAvatar(
               child: ClipOval(
-                child: Image(image: AssetImage(imageAssetUrl), height: 60.0, width: 60.0, fit: BoxFit.cover,),
+                child: FadeInImage(
+                  placeholder: MemoryImage(kTransparentImage), 
+                  image: AssetImage(imageAssetUrl),
+                  height: 60.0,
+                  width: 60.0,
+                  fit: BoxFit.cover,
+                  )
               ),
             ),
           ),

@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 
 class CategoryNewsRepository extends BaseCategoryNewsRepository {
-  static const int perPage = 60;
+  static const int perPage = 30;
     final http.Client _httpClient;
 
 

@@ -161,7 +161,8 @@ class _HomeScreenState extends State<HomeScreen>
                   onNotification: (notification) =>
                       _onHorizontalScrollNotification(notification, state),
                   child: Container(
-                    height: 300.0,
+                    margin: EdgeInsets.only(top: 8.0, bottom: 8.0),
+                    height: 310.0,
                     child: ListView.builder(
                       itemCount: state.topnews.length,
                       controller: _horizontalScrollController,
@@ -233,7 +234,7 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
                 //News Tile
                 Container(
-                  margin: EdgeInsets.only(top: 16.0),
+                  margin: EdgeInsets.only(top: 8.0),
                   child: NotificationListener<ScrollNotification>(
                     onNotification: (notification) =>
                         _onVerticalScrollNotification(notification, state),
@@ -285,7 +286,7 @@ class _HomeScreenState extends State<HomeScreen>
   bool _onVerticalScrollNotification(
       ScrollNotification notif, NewsLoaded state) {
     if (notif is ScrollEndNotification &&
-        _verticalScrollController.position.extentAfter == 2) {
+        _verticalScrollController.position.extentAfter == 0) {
       context
           .bloc<NewsBloc>()
           .add(LoadMoreNews(topnews: state.topnews, news: state.news));

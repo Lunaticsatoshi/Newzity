@@ -32,6 +32,8 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
        yield* _mapLoadMoreNewsToState(event);
      }else if (event is LoadMoreTopNews){
       yield* _mapLoadMoreTopNewsToState(event);
+     }else if (event is LoadCategoryNews){
+       yield*_mapLoadCategoryNewsToState(event.category);
      }else if (event is RefreshCategoryNews){
        yield* _getCategoryNews(categorynews: [], category: event.category);
      }else if (event is LoadMoreCategoryNews){
@@ -42,6 +44,11 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
      Stream<NewsState> _mapAppStartedToState() async* {
        yield NewsLoading();
        yield* _getNews(topnews: [],news: []);
+     }
+
+     Stream<NewsState> _mapLoadCategoryNewsToState(String category) async*{
+       yield CategoryNewsLoading();
+      yield* _getCategoryNews(categorynews: [],category: category);
      }
 
    Stream<NewsState> _getNews({List<Article> topnews,List<Article> news, int page = 0, int page1 = 1 }) async* {

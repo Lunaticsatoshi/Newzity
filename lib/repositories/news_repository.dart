@@ -6,7 +6,7 @@ import 'package:newzity/utilities/apikey.dart';
 import 'package:http/http.dart' as http;
 
 class NewsRepository extends BaseNewsRepository {
-  static const int perPage = 100;
+  static const int perPage = 50;
   final http.Client _httpClient;
 
   NewsRepository({http.Client httpClient}) : _httpClient = httpClient ?? http.Client();

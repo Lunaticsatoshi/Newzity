@@ -13,6 +13,8 @@ class NewsEmpty extends NewsState {}
 //Loading State
 class NewsLoading extends NewsState {}
 
+//Category News Loading
+class CategoryNewsLoading extends NewsState {}
 
 //Retrieved News
 class NewsLoaded extends NewsState{

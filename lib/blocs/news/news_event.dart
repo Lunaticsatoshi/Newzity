@@ -9,6 +9,12 @@ abstract class NewsEvent extends Equatable{
  //App Started
 class AppStarted extends NewsEvent {}
 
+//Loading Category News
+class LoadCategoryNews extends NewsEvent {
+   final String category;
+
+  LoadCategoryNews({this.category}); 
+}
 
 //Refresh News
 class RefreshNews extends NewsEvent {}
